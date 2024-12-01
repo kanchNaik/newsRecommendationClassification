@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from newsrecapis.MLModels.NaiveBayse import train_nb_model
+from newsrecapis.News.NewsClassProcessor import get_newsWithClass
 
 def trainModel(request):
     try:
@@ -11,5 +12,6 @@ def trainModel(request):
 
 def getRecommendedNews(request):
     # Implement logic to get recommended news based on the category
-    recommended_news = []
+    recommended_news = get_newsWithClass()
+    
     return JsonResponse({"recommended_news": recommended_news}, status=200)
