@@ -9,7 +9,7 @@ function App() {
   return (
     <Routes>
       {/* Default route will show LoginPage */}
-      <Route path="/" element={<LoginPage />} /> {/* Login page route */}
+      <Route path="/login" element={<LoginPage />} /> {/* Login page route */}
       
       {/* These routes are for after successful login */}
       <Route path="/welcome" element={<WelcomePage />} /> {/* Welcome page route */}

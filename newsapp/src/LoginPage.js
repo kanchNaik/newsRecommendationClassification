@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';  // Import axios to make HTTP requests
 
 function LoginPage() {
   const [username, setUsername] = useState('');
@@ -7,7 +8,7 @@ function LoginPage() {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Clear previous error message
@@ -19,13 +20,22 @@ function LoginPage() {
       return;
     }
 
-    // Mock login credentials (replace with API call)
-    if (username === 'user' && password === 'password') {
-      // Simulate successful login
-      navigate('/welcome');  // Navigate to the WelcomePage
-    } else {
-      // Display error if login fails
-      setErrorMessage('Invalid credentials');
+    try {
+      // Make an API call to your authentication route
+      const response = await axios.post('http://localhost:8000/login/', {
+        username: username,
+        password: password
+      });
+
+      // Assuming the API returns a success message on correct credentials
+      if (response.status === 201 || response.status === 200) {
+        navigate('/welcome');  // Navigate to the WelcomePage
+      } else {
+        setErrorMessage('Invalid credentials');
+      }
+    } catch (error) {
+      // Handle errors here, such as network issues, server down, etc.
+      setErrorMessage('Login failed. Please try again later.');
     }
   };
 
