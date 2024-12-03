@@ -15,24 +15,30 @@ from sklearn.svm import SVC
 print("Current Working Directory:", os.getcwd())
 
 
+from sklearn.preprocessing import StandardScaler
 def train_svc(X, y, filename):
-    y = encode_labels(y)
-    
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,random_state=42)
-    
+    y = encode_labels(y)  # Assuming you have a function for encoding labels
+    print("Encoded labels")
+    # Preprocessing: Scaling the features
+    scaler = StandardScaler()
+    X = scaler.fit_transform(X)
+    print("x scaled")
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    print("train test split")
     # Creating the SVM model
-    model = OneVsRestClassifier(SVC())
-
+    model = OneVsRestClassifier(SVC(kernel='linear', max_iter=5000, tol=1e-3))
+    print("model created")
     # Fitting the model with training data
     model.fit(X_train, y_train)
-
+    print("model trained")
     # Making a prediction on the test set
     prediction = model.predict(X_test)
-
+    print("predictions made")
     # Evaluating the model
     print('Precision is {}'.format(precision_score(y_test, prediction, average='macro')))
     print('Recall is {}'.format(recall_score(y_test, prediction, average='macro')))
     print('F1:', f1_score(y_test, prediction, average='macro'))
+
 
     try:
         with open(filename, 'wb') as f:
@@ -50,6 +56,6 @@ def train_svc_model():
     print("tfid generating...")
     X_tfidf = get_tfidf(df['text'])
     print("tfid generated...")
-    train_svc(X_tfidf, df['combined_categories'], "newsrecapis/MLModels/picklefilesofmodels/nb_model_combinedcat.pkl")
-    train_svc(X_tfidf, df['category_level_1'], "newsrecapis/MLModels/picklefilesofmodels/nb_model_cat1.pkl")
-    train_svc(X_tfidf, df['category_level_2'], "newsrecapis/MLModels/picklefilesofmodels/nb_model_cat2.pkl")
+    train_svc(X_tfidf, df['combined_categories'], "newsrecapis/MLModels/picklefilesofmodels/svm_model_combinedcat.pkl")
+    train_svc(X_tfidf, df['category_level_1'], "newsrecapis/MLModels/picklefilesofmodels/svm_model_cat1.pkl")
+    train_svc(X_tfidf, df['category_level_2'], "newsrecapis/MLModels/picklefilesofmodels/svm_model_cat2.pkl")

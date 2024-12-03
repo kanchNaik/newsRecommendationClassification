@@ -36,3 +36,8 @@ class SignupSerializer(serializers.ModelSerializer):
         return user
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'name', 'phone_number', 'preferred_news_categories']
+        read_only_fields = ['id', 'username', 'email'] 

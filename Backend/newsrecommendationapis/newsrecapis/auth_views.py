@@ -12,9 +12,13 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import SignupSerializer
+from .serializers import SignupSerializer, UserSerializer
+from rest_framework.permissions import AllowAny
 
 class SignupAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    @csrf_exempt
     def post(self, request):
         serializer = SignupSerializer(data=request.data)
         if serializer.is_valid():

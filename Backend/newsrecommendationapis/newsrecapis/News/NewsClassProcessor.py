@@ -1,11 +1,21 @@
-from Backend.newsrecommendationapis.newsrecapis.News.fetchnews import fetch_news_article, get_newsText
-from Backend.newsrecommendationapis.newsrecapis.dataprep import get_tfidf
+from newsrecapis.News.fetchnews import fetch_news_article, get_newsText
+from newsrecapis.dataprep import get_tfidf
 import pickle
+
+
+def get_newsWithClass(modelName):
+    print(modelName)
+    if modelName == 'lr':
+        return get_newsWithClass_lr()
+    elif modelName == 'svc':
+        return get_newsWithClass_svc()
+    elif modelName == 'nb':
+        return get_newsWithClass_nb()
 
 def get_newsWithClass_nb():
     model = None
 
-    with open('newsrecapis/MLModels/picklefilesofmodels/lr_model_combinedcat.pkl', 'rb') as f:
+    with open('newsrecapis/MLModels/picklefilesofmodels/nb_model_cat1.pkl', 'rb') as f:
         model = pickle.load(f)
 
     vectorizer = None
@@ -25,7 +35,7 @@ def get_newsWithClass_nb():
 def get_newsWithClass_lr():
     model = None
 
-    with open('newsrecapis/MLModels/picklefilesofmodels/lr_model_combinedcat.pkl', 'rb') as f:
+    with open('newsrecapis/MLModels/picklefilesofmodels/lr_model_cat1.pkl', 'rb') as f:
         model = pickle.load(f)
 
     vectorizer = None
@@ -37,8 +47,14 @@ def get_newsWithClass_lr():
     vectors = vectorizer.transform(newsText['text'])
     predictions = model.predict(vectors)
 
-    for article, prediction in zip(newsArticles, predictions):
+    with open('newsrecapis/MLModels/picklefilesofmodels/label_encoder.pkl', 'rb') as file:
+        loaded_le = pickle.load(file)
+
+    decoded_labels = loaded_le.inverse_transform(predictions)
+
+    for article, prediction in zip(newsArticles, decoded_labels):
         article['prediction'] = prediction
+        #loaded_le.inverse_transform([prediction])[0] #loaded_le.inverse_transform(prediction)
 
     return newsArticles
 

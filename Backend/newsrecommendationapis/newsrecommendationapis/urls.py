@@ -16,11 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from newsrecapis.views import trainModel, getRecommendedNews
-from newsrecapis.auth_views import SignupAPIView
+from newsrecapis.auth_views import SignupAPIView, LoginView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('train/', trainModel, name='train_model'),
     path('get_news/', getRecommendedNews, name='get_news'),
     path('signup/', SignupAPIView.as_view(), name='signup'),
+    path('login/', LoginView.as_view(), name='login'),
 ]

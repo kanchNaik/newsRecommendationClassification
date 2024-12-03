@@ -20,7 +20,7 @@ def encode_labels(y):
     le.fit(y)
     with open('newsrecapis/MLModels/picklefilesofmodels/label_encoder.pkl', 'wb') as file:
         pickle.dump(le, file)
-    return le
+    return le.fit_transform(y)
 
 def PrepTrainingData():
     df = pd.read_csv('https://zenodo.org/record/7394851/files/MN-DS-news-classification.csv?download=1')
