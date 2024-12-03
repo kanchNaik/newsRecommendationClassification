@@ -18,7 +18,7 @@ def fetch_news_article():
              except Exception as e:
                  print(e)
 
-        print(api_response_objects)
+        #print(api_response_objects)
         return api_response_objects
 
 def get_newsText(api_response_objects):

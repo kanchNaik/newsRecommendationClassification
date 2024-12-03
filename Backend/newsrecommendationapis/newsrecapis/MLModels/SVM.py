@@ -6,7 +6,7 @@ from sklearn.metrics.pairwise import cosine_similarity as cs
 from sklearn.pipeline import Pipeline
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.multiclass import OneVsRestClassifier
-from Backend.newsrecommendationapis.newsrecapis.dataprep import PrepTrainingData, get_tfidf
+from newsrecapis.dataprep import PrepTrainingData, get_tfidf, encode_labels
 
 import os
 
@@ -16,27 +16,27 @@ print("Current Working Directory:", os.getcwd())
 
 
 def train_svc(X, y, filename):
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    y = encode_labels(y)
+    
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,random_state=42)
+    
+    # Creating the SVM model
+    model = OneVsRestClassifier(SVC())
 
-    # Define a pipeline combining a text feature extractor with multi lable classifier
-    SVC_pipeline = Pipeline([
-        ('tfidf',
-         TfidfVectorizer(strip_accents='unicode', analyzer='word', ngram_range=(1, 2), norm='l2', max_features=50000)),
-        ('clf', OneVsRestClassifier(SVC(probability=True)))
-    ])
+    # Fitting the model with training data
+    model.fit(X_train, y_train)
 
-    print("Model training...")
-    SVC_pipeline.fit(X_train, y_train)
-    # compute the testing accuracy
-    print("Model trained...")
-    prediction = SVC_pipeline.predict(X_test)
+    # Making a prediction on the test set
+    prediction = model.predict(X_test)
+
+    # Evaluating the model
     print('Precision is {}'.format(precision_score(y_test, prediction, average='macro')))
     print('Recall is {}'.format(recall_score(y_test, prediction, average='macro')))
     print('F1:', f1_score(y_test, prediction, average='macro'))
 
     try:
         with open(filename, 'wb') as f:
-            pickle.dump(SVC_pipeline, f)
+            pickle.dump(model, f)
     except Exception as e:
         print(f"Error saving model to {filename}: {e}")
 

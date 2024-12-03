@@ -17,7 +17,10 @@ def get_tfidf(X):
 
 def encode_labels(y):
     le = LabelEncoder()
-    return le.fit_transform(y)
+    le.fit(y)
+    with open('newsrecapis/MLModels/picklefilesofmodels/label_encoder.pkl', 'wb') as file:
+        pickle.dump(le, file)
+    return le
 
 def PrepTrainingData():
     df = pd.read_csv('https://zenodo.org/record/7394851/files/MN-DS-news-classification.csv?download=1')
