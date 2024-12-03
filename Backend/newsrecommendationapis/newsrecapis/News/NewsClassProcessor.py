@@ -7,8 +7,8 @@ def get_newsWithClass(modelName):
     print(modelName)
     if modelName == 'lr':
         return get_newsWithClass_lr()
-    elif modelName == 'svc':
-        return get_newsWithClass_svc()
+    elif modelName == 'svm':
+        return get_newsWithClass_svm()
     elif modelName == 'nb':
         return get_newsWithClass_nb()
 
@@ -58,10 +58,10 @@ def get_newsWithClass_lr():
 
     return newsArticles
 
-def get_newsWithClass_svc():
+def get_newsWithClass_svm():
     model = None
 
-    with open('newsrecapis/MLModels/picklefilesofmodels/svc_model_combinedcat.pkl', 'rb') as f:
+    with open('newsrecapis/MLModels/picklefilesofmodels/svm_model_cat1.pkl', 'rb') as f:
         model = pickle.load(f)
 
     vectorizer = None

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';  // Import axios to make HTTP requests
+import axios from 'axios';
+import Cookies from 'js-cookie'; // Import js-cookie
+import './LoginPage.css';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
@@ -24,12 +26,18 @@ function LoginPage() {
       // Make an API call to your authentication route
       const response = await axios.post('http://localhost:8000/login/', {
         username: username,
-        password: password
+        password: password,
       });
 
-      // Assuming the API returns a success message on correct credentials
+      // Assuming the API returns a success message and token on correct credentials
       if (response.status === 201 || response.status === 200) {
-        navigate('/welcome');  // Navigate to the WelcomePage
+        const { token, user } = response.data;
+
+        // Store the token in cookies
+        Cookies.set('authToken', token, { expires: 7 }); // Expires in 7 days (adjust as needed)
+
+        // Redirect to the WelcomePage
+        navigate('/welcome');
       } else {
         setErrorMessage('Invalid credentials');
       }
@@ -41,8 +49,12 @@ function LoginPage() {
 
   return (
     <div className="login-container">
-      <h2><u>News Recommendation</u></h2>
-      <h2><center>Login</center></h2>
+      <h2>
+        <u>News Recommendation</u>
+      </h2>
+      <h2>
+        <center>Login</center>
+      </h2>
       <form onSubmit={handleSubmit} className="login-form">
         <div className="form-group">
           <label htmlFor="username">Username:</label>
@@ -70,7 +82,9 @@ function LoginPage() {
 
         {errorMessage && <div className="error-message">{errorMessage}</div>}
 
-        <button type="submit" className="login-btn">Login</button>
+        <button type="submit" className="login-btn">
+          Login
+        </button>
       </form>
       <p className="signup-link">
         Don't have an account? <Link to="/SignupPage">Sign up</Link>

@@ -90,7 +90,8 @@ function SignupPage() {
         <div className="form-group preferences">
           <label>Preferred News Categories:</label>
           <div className="checkbox-group">
-            {['Politics', 'Technology', 'Sports', 'Fashion', 'Food', 'Crime', 'Entertainment', 'Music', 'Kids'].map(category => (
+            {["arts, culture, entertainment and media", "conflict, war and peace", "crime, law and justice", "disaster, accident and emergency incident", "economy, business and finance", "education", "environment", "health" , "human interest", "labour" , "lifestyle and leisure", "politics", "religion and belief", "science and technology", "society", "sport", "weather"
+].map(category => (
               <div key={category}>
                 <input type="checkbox" id={category} value={category}
                   checked={preferredNewsCategories.includes(category)}

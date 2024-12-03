@@ -14,6 +14,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import SignupSerializer, UserSerializer
 from rest_framework.permissions import AllowAny
+from datetime import timedelta
 
 class SignupAPIView(APIView):
     permission_classes = [AllowAny]
@@ -52,6 +53,7 @@ class LoginView(APIView):
 
             refresh = RefreshToken.for_user(user)
             access_token = str(refresh.access_token)
+            refresh.set_exp(lifetime=timedelta(days=7))
             
             # Optionally return user data and token
             return Response({

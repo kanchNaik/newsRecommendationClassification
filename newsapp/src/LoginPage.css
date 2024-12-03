@@ -1,6 +1,18 @@
 /* LoginPage.css */
+.login-container {
+  flex: 1;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 50%;
+}
+
 .login-page {
-  width: 100%; /* Updated to use full width if necessary */
+  width: 50%; /* Updated to use full width if necessary */
   max-width: 400px; /* Added a max-width to control the expansion on larger screens */
   margin: 50px auto;
   padding: 20px;
@@ -20,6 +32,7 @@
 .login-page form {
   display: flex;
   flex-direction: column;
+  width: 50%;
 }
 
 .login-page input {
