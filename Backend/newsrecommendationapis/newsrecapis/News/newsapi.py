@@ -1,13 +1,13 @@
 import requests
 
 class NewsAPI:
-    NEWS_API_KEY = "f049190b6b744976b46acc21a25972f9"
+    NEWS_API_KEY = ""
     def __init__(self):
-        self.NEWS_API_KEY = "f049190b6b744976b46acc21a25972f9"
+        self.NEWS_API_KEY = ""
 
     def get_news(self):
         extracted_data_list = []
-        base_url = f"https://newsapi.org/v2/everything?q=currents&sortBy=publishedAt&apiKey=f049190b6b744976b46acc21a25972f9&language=en"
+        base_url = f"https://newsapi.org/v2/everything?q=currents&sortBy=publishedAt&apiKey=&language=en"
         response = requests.get(base_url)
         response.raise_for_status() 
         data = response.json()
